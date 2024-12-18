@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "rootDirs": ["src"],
+    "outDir": "dist",
+    "lib": ["dom", "es6"],
+    "target": "ES2019",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "types": ["node"],
+    "sourceMap": false,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "useDefineForClassFields": true
+  },
+  "include": ["./src/**/*.ts", "src/test/unit/book/book.test.cjsook.test.cjs"],
+  "exclude": ["node_modules"],
+  "ts-node": {
+    "experimentalSpecifierResolution": "node"
+  }
+}
