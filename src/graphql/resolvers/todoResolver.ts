@@ -1,15 +1,48 @@
+import { Resolver, Query, Arg, Mutation } from 'type-graphql';
+
+import { TodoInput } from '../typeDefs/todoTypeDef';
 import {
-  Resolver,
-  Query,
-} from 'type-graphql';
-
-import {TodoTypeDef} from '../typeDefs/todoTypeDef';
-
+  getTodos,
+  deleteTodo,
+  createTodo,
+  updateTodo,
+  getTodoById,
+  getTodoByTitle,
+} from '../../controller/todoController';
+import { TodoResponse } from '../typeDefs/todoTypeDef';
+import { Todo } from '../../entity/todoModel';
 @Resolver()
-export  class TodoResolver {
+export class TodoResolver {
+  @Mutation(() => TodoResponse, { nullable: true }) // type of return value when created data
+  async createTodo(@Arg('input') input: TodoInput): Promise<Todo> {
+    return createTodo(input);
+  }
 
-  @Query(() => [TodoTypeDef])
-  async getTodos(): Promise<TodoTypeDef[]> {
-    return [];
+  @Mutation(() => TodoResponse)
+  async deleteTodo(@Arg('todoId') todoId: string): Promise<Todo> {
+    return await deleteTodo(todoId);
+  }
+
+  @Mutation(() => TodoResponse)
+  async updateTodo(
+    @Arg('todoId') todoId: string,
+    @Arg('data') data: TodoInput
+  ) {
+    return updateTodo(todoId, data);
+  }
+
+  @Query(() => [TodoResponse])
+  async getTodos(): Promise<TodoResponse[]> {
+    return getTodos();
+  }
+
+  @Query(() => TodoResponse)
+  async getTodoById(@Arg('todoId') todoId: string): Promise<TodoResponse> {
+    return getTodoById(todoId);
+  }
+
+  @Query(() => TodoResponse)
+  async getTodoByTitle(@Arg('todoTitle') todoTitle: string): Promise<TodoResponse> {
+    return getTodoByTitle(todoTitle);
   }
 }
