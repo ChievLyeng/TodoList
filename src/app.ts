@@ -1,59 +1,34 @@
+import 'reflect-metadata';
 import express from 'express';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
+import { connectDB } from './config/dbConfig';
 import cors from 'cors';
+import { buildSchema } from 'type-graphql';
+import { TodoResolver } from './graphql/resolvers/todoResolver';
 
-const app = express();
-app.use(express.json());
+const startApolloServer = async () => {
+  const app = express();
+  const PORT = Number(process.env.PORT);
 
-async function startApolloServer() {
-  const typeDefs = `
-    type Todo {
-      id: ID!
-      title: String!
-      completed: Boolean!
-    }
+  app.use(express.json());
+  app.use(cors());
 
-    type Query {
-      todos: [Todo!]!
-    }
+  // connect DB
+  await connectDB();
 
-    type Mutation {
-      addTodo(title: String!): Todo!
-    }
-  `;
-
-  const todos = [];
-
-  const resolvers = {
-    Query: {
-      todos: () => [
-        {
-          id: '1',
-          title: 'Todo1',
-          completed: false,
-        },
-      ],
-    },
-    Mutation: {
-      addTodo: (_, { title }) => {
-        const newTodo = { id: todos.length + 1, title, completed: false };
-        todos.push(newTodo);
-        return newTodo;
-      },
-    },
-  };
-
-  const server = new ApolloServer({ typeDefs, resolvers });
-
-  const { url } = await startStandaloneServer(server, {
-    listen: { port: 4000 },
+  const apolloServer = new ApolloServer({
+    schema: await buildSchema({
+      resolvers: [TodoResolver],
+      validate: true,
+    }),
   });
 
-  console.log(`
-    🚀  Server is running!
-    📭  Query at ${url}
-  `);
-}
+  await startStandaloneServer(apolloServer, {
+    listen: { port: PORT },
+  });
+
+  console.log(`Server is runing at ${PORT}`);
+};
 
 startApolloServer();
