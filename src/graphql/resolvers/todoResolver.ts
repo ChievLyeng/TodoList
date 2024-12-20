@@ -1,6 +1,7 @@
 import { Resolver, Query, Arg, Mutation } from 'type-graphql';
+import { ApolloServerErrorCode } from '@apollo/server/errors';
 
-import { TodoInput } from '../typeDefs/todoTypeDef';
+import { TodoInput, TodoUpdateInput } from '../typeDefs/todoTypeDef';
 import {
   getTodos,
   deleteTodo,
@@ -11,6 +12,8 @@ import {
 } from '../../controller/todoController';
 import { TodoResponse } from '../typeDefs/todoTypeDef';
 import { Todo } from '../../entity/todoModel';
+import { GraphQLError } from 'graphql';
+import { Types } from 'mongoose';
 @Resolver()
 export class TodoResolver {
   @Mutation(() => TodoResponse, { nullable: true }) // type of return value when created data
@@ -26,7 +29,7 @@ export class TodoResolver {
   @Mutation(() => TodoResponse)
   async updateTodo(
     @Arg('todoId') todoId: string,
-    @Arg('data') data: TodoInput
+    @Arg('data') data: TodoUpdateInput
   ) {
     return updateTodo(todoId, data);
   }
@@ -36,13 +39,15 @@ export class TodoResolver {
     return getTodos();
   }
 
-  @Query(() => TodoResponse)
+  @Query(() => TodoResponse, { nullable: true })
   async getTodoById(@Arg('todoId') todoId: string): Promise<TodoResponse> {
     return getTodoById(todoId);
   }
 
   @Query(() => TodoResponse)
-  async getTodoByTitle(@Arg('todoTitle') todoTitle: string): Promise<TodoResponse> {
+  async getTodoByTitle(
+    @Arg('todoTitle') todoTitle: string
+  ): Promise<TodoResponse> {
     return getTodoByTitle(todoTitle);
   }
 }

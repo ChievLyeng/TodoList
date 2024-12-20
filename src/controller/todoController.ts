@@ -1,44 +1,63 @@
 import { Todo } from '../entity/todoModel';
-import { TodoInput, TodoResponse } from '../graphql/typeDefs/todoTypeDef';
+import asyncErrorHandler from '../errorHandlers/asyncErrorHandler';
+import {
+  TodoInput,
+  TodoResponse,
+  TodoUpdateInput,
+} from '../graphql/typeDefs/todoTypeDef';
 import { TodoService } from '../service/todoService';
+import { Types } from 'mongoose';
 
 const todoService = new TodoService();
 
-// Define the createTodo function
-export const createTodo = async (input): Promise<Todo> => {
-  const { title, description, completed, dueDate } = input;
+export const createTodo = asyncErrorHandler(
+  async (input: TodoInput): Promise<Todo> => {
+    const { title, description, completed, dueDate } = input;
 
-  const validatedInfo = {
-    title,
-    description,
-    completed,
-    dueDate,
-  };
+    if (!title) throw new Error('Title is require.');
+    if (!dueDate) throw new Error('Due Date is require.');
 
-  return await todoService.create(validatedInfo);
-};
+    const validatedData = {
+      title,
+      description,
+      completed,
+      dueDate,
+    };
 
-export const getTodos = async (): Promise<TodoResponse[]> => {
+    return await todoService.create(validatedData);
+  }
+);
+
+export const getTodos = asyncErrorHandler(async (): Promise<TodoResponse[]> => {
   return await todoService.find();
-};
+});
 
-export const getTodoById = async (todoId: string): Promise<TodoResponse> => {
-  return await todoService.findById(todoId);
-};
+export const getTodoById = asyncErrorHandler(
+  async (todoId: string): Promise<TodoResponse> => {
+    if (!Types.ObjectId.isValid(todoId)) throw new Error('Invalid Todo Id!');
 
-export const getTodoByTitle = async (
-  todoTitle: string
-): Promise<TodoResponse> => {
-  return await todoService.findByTitle(todoTitle);
-};
+    return await todoService.findById(todoId);
+  }
+);
 
-export const updateTodo = async (
-  todoId: string,
-  data: TodoInput
-): Promise<Todo> => {
-  return await todoService.update(todoId, data);
-};
+export const getTodoByTitle = asyncErrorHandler(
+  async (todoTitle: string): Promise<TodoResponse> => {
+    if (!todoTitle) throw new Error('Title is require.');
+    return await todoService.findByTitle(todoTitle);
+  }
+);
 
-export const deleteTodo = async (todoId: string): Promise<Todo> => {
-  return todoService.delete(todoId);
-};
+export const updateTodo = asyncErrorHandler(
+  async (todoId: string, data: TodoUpdateInput): Promise<Todo> => {
+    if (!Types.ObjectId.isValid(todoId)) throw new Error('Invalid Todo Id.');
+    return await todoService.update(todoId, data);
+  }
+);
+
+export const deleteTodo = asyncErrorHandler(
+  async (todoId: string): Promise<Todo> => {
+    if (!Types.ObjectId.isValid(todoId)) throw new Error('Invalid Todo Id!');
+
+    return todoService.delete(todoId);
+  }
+);

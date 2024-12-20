@@ -1,6 +1,10 @@
 import { getModelForClass } from '@typegoose/typegoose';
 import { Todo } from '../entity/todoModel';
-import { TodoInput, TodoResponse } from '../graphql/typeDefs/todoTypeDef';
+import {
+  TodoInput,
+  TodoResponse,
+  TodoUpdateInput,
+} from '../graphql/typeDefs/todoTypeDef';
 
 export class TodoService {
   private todoModel = getModelForClass(Todo);
@@ -36,11 +40,20 @@ export class TodoService {
   }
 
   // update todo by id
-  async update(todoId: string, data: TodoInput): Promise<Todo> {
-    const updatedTodo = await this.todoModel.findByIdAndUpdate({
-      _id: todoId,
-      ...data,
-    });
+  async update(todoId: string, data: TodoUpdateInput): Promise<Todo> {
+    const { title, description, dueDate, completed } = data;
+    const updatedTodo = await this.todoModel.findByIdAndUpdate(
+      todoId,
+      {
+        title,
+        description,
+        completed,
+        dueDate,
+      },
+      { new: true }
+    );
+
+    console.log('updatedData', updatedTodo);
     return updatedTodo;
   }
 }
