@@ -7,7 +7,7 @@
     "module": "CommonJS",
     "moduleResolution": "Node",
     "esModuleInterop": true,
-    "types": ["node"],
+    "types": ["jest", "node"],
     "sourceMap": false,
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,

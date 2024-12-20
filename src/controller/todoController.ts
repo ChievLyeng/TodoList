@@ -14,8 +14,8 @@ export const createTodo = asyncErrorHandler(
   async (input: TodoInput): Promise<Todo> => {
     const { title, description, completed, dueDate } = input;
 
-    if (!title) throw new Error('Title is require.');
-    if (!dueDate) throw new Error('Due Date is require.');
+    if (!title) throw new Error('Title is required.');
+    if (!dueDate) throw new Error('Due Date is required.');
 
     const validatedData = {
       title,

@@ -53,7 +53,6 @@ export class TodoService {
       { new: true }
     );
 
-    console.log('updatedData', updatedTodo);
     return updatedTodo;
   }
 }
