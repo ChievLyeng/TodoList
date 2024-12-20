@@ -14,9 +14,9 @@ export class Todo {
   @GqlField(() => String)
   title!: string;
 
-  @DbField({ required: true })
-  @GqlField(() => String)
-  description!: string;
+  @DbField({ required: false })
+  @GqlField(() => String, { nullable: true })
+  description: string;
 
   @DbField({ default: false })
   @GqlField(() => Boolean, { nullable: true })
