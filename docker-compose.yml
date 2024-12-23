@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+
+  api_todo:
+    build: .
+    ports:
+      - 4000:3000
+    env_file:
+     - .env
+    environment:
+      PORT: 3000
+      MONGODB_URI: ${MONGO_URI_MASTER}
+
+    networks:
+      - sabay_docker
+volumes:
+  mongo_db:
+
+networks:
+  sabay_docker:
+    external: true
