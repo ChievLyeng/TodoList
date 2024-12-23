@@ -1,26 +1,40 @@
 import { describe } from 'node:test';
 import { createTodo } from '../../controller/todoController';
+import { getModelForClass } from '@typegoose/typegoose';
+import { Todo } from '../../entity/todoModel';
+import { graphql } from 'graphql';
+
+const mockInput = {
+  title: 'Test 1',
+  description: 'Desc 1', // Corrected from "describe" to "description"
+  dueDate: 1212,
+  completed: false,
+};
 
 describe('createTodo', () => {
-  const mockInput = {
-    title: 'Test 1',
-    describe: 'Desc 1',
-    dueDate: 1212,
-  };
+  test('Should Show error message Title is require.', async () => {
+    const todo = await createTodo({
+      ...mockInput,
+      title: '',
+    });
 
-  test('Should throw a "Title is required." error message', async () => {
-    await expect(
-      createTodo({
-        input: { ...mockInput, title: '' },
-      })
-    ).rejects.toThrow('Title is required.');
+    expect(todo.message).toEqual('Title is required.');
+
+    // // Verify the controller was called correctly
+    // expect(createTodo).toHaveBeenCalledWith(mockInput);
+    // expect(createTodo).toHaveBeenCalledTimes(1);
   });
 
-  //   test('Should throw a "Title is required" error message', async () => {
-  //     await expect(
-  //       createTodo({
-  //         input: { ...mockInput, title: '' },
-  //       })
-  //     ).rejects.toThrow('Title is require.');
-  //   });
+  test('Should Show error message Invalid Due Date, It must be number.', async () => {
+    const todo = await createTodo({
+      ...mockInput,
+      dueDate: undefined,
+    });
+
+    expect(todo.message).toEqual('Invalid Due Date, It must be number.');
+
+    // // Verify the controller was called correctly
+    // expect(createTodo).toHaveBeenCalledWith(mockInput);
+    // expect(createTodo).toHaveBeenCalledTimes(1);
+  });
 });
