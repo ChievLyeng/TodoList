@@ -8,7 +8,7 @@ const TodoModel = getModelForClass(Todo);
 export default async () => {
   await connectDB();
 
-    await TodoModel.deleteMany({});
+  await TodoModel.deleteMany({});
 
   await mongoose.connection.close();
 };

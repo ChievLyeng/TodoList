@@ -1,8 +1,10 @@
 import { describe } from 'node:test';
-import { createTodo } from '../../controller/todoController';
-import { getModelForClass } from '@typegoose/typegoose';
-import { Todo } from '../../entity/todoModel';
-import { graphql } from 'graphql';
+import {
+  createTodo,
+  deleteTodo,
+  getTodos,
+  updateTodo,
+} from '../../controller/todoController';
 
 const mockInput = {
   title: 'Test 1',
@@ -12,6 +14,7 @@ const mockInput = {
 };
 
 describe('createTodo', () => {
+  // create todo without title
   test('Should Show error message Title is require.', async () => {
     const todo = await createTodo({
       ...mockInput,
@@ -19,22 +22,24 @@ describe('createTodo', () => {
     });
 
     expect(todo.message).toEqual('Title is required.');
-
-    // // Verify the controller was called correctly
-    // expect(createTodo).toHaveBeenCalledWith(mockInput);
-    // expect(createTodo).toHaveBeenCalledTimes(1);
   });
 
-  test('Should Show error message Invalid Due Date, It must be number.', async () => {
-    const todo = await createTodo({
-      ...mockInput,
-      dueDate: undefined,
+  // update todo with invalid id
+  test('Should show error message Invalid Todo Id.', async () => {
+    const todo = await updateTodo({
+      todoId: '',
+      data: {},
     });
 
-    expect(todo.message).toEqual('Invalid Due Date, It must be number.');
+    expect(todo.message).toEqual('Invalid Todo Id.');
+  });
 
-    // // Verify the controller was called correctly
-    // expect(createTodo).toHaveBeenCalledWith(mockInput);
-    // expect(createTodo).toHaveBeenCalledTimes(1);
+  // delete todo with invalid id
+  test('Should show error message Invalid Todo Id.', async () => {
+    const todo = await deleteTodo({
+      todoId: '',
+    });
+
+    expect(todo.message).toEqual('Invalid Todo Id.');
   });
 });

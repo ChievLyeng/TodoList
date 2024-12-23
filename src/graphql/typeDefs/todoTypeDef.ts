@@ -1,4 +1,4 @@
-import { ID, Field, Int, ObjectType as GqlType, InputType } from 'type-graphql';
+import { ID, Field, Int, ObjectType as GqlType, InputType, ObjectType } from 'type-graphql';
 import { Todo } from '../../entity/todoModel';
 
 @InputType()

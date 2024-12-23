@@ -4,6 +4,7 @@ dotEnv.config({ path: './src/test/.test.env' });
 
 export const connectDB = async (): Promise<void> => {
   const DB_URI = process.env.MONGO_URI_MASTER;
+  console.log('dburi', DB_URI);
 
   try {
     await mongoose

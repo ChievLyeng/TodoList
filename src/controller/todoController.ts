@@ -56,7 +56,7 @@ export const updateTodo = asyncErrorHandler(
 
 export const deleteTodo = asyncErrorHandler(
   async (todoId: string): Promise<Todo> => {
-    if (!Types.ObjectId.isValid(todoId)) throw new Error('Invalid Todo Id!');
+    if (!Types.ObjectId.isValid(todoId)) throw new Error('Invalid Todo Id.');
 
     return todoService.delete(todoId);
   }

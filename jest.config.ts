@@ -5,7 +5,6 @@ export default {
   collectCoverage: true,
   testPathIgnorePatterns: [
     '/dist/',
-    // '/docker/',
     '/build/',
     '/lib/',
     '/node_modules/',

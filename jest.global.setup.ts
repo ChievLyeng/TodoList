@@ -7,11 +7,11 @@ const TodoModel = getModelForClass(Todo);
 
 export default async () => {
   await connectDB();
-  TodoModel.insertMany([
-    {
-      title: 'Todo 1',
-      description: 'Desc 1',
-      dueDate: 121,
-    },
-  ]);
+  // TodoModel.insertMany([
+  //   {
+  //     title: 'Todo 1',
+  //     description: 'Desc 1',
+  //     dueDate: 121,
+  //   },
+  // ]);
 };
