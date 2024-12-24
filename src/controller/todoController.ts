@@ -14,6 +14,7 @@ export const createTodo = asyncErrorHandler(
   async (input: TodoInput): Promise<Todo> => {
     const { title, description, completed, dueDate } = input;
 
+    // Check if title is not input
     if (!title) throw new Error('Title is required.');
 
     const validatedData = {
@@ -33,6 +34,7 @@ export const getTodos = asyncErrorHandler(async (): Promise<TodoResponse[]> => {
 
 export const getTodoById = asyncErrorHandler(
   async (todoId: string): Promise<TodoResponse> => {
+    // check if valid todoId
     if (!Types.ObjectId.isValid(todoId)) throw new Error('Invalid Todo Id!');
 
     return await todoService.findById(todoId);
@@ -41,6 +43,7 @@ export const getTodoById = asyncErrorHandler(
 
 export const getTodoByTitle = asyncErrorHandler(
   async (todoTitle: string): Promise<TodoResponse> => {
+    // check for title input
     if (!todoTitle) throw new Error('Title is require.');
     return await todoService.findByTitle(todoTitle);
   }
@@ -48,17 +51,21 @@ export const getTodoByTitle = asyncErrorHandler(
 
 export const updateTodo = asyncErrorHandler(
   async (todoId: string, data: TodoUpdateInput): Promise<Todo> => {
+    // check if valid todoId
     if (!Types.ObjectId.isValid(todoId)) throw new Error('Invalid Todo Id.');
 
     const updatedTodo = await todoService.update(todoId, data);
-    console.log('updatedTodo', updatedTodo);
+
+    // check if todo does not exist
     if (!updatedTodo) throw new Error('Todo not found.');
+
     return updatedTodo;
   }
 );
 
 export const deleteTodo = asyncErrorHandler(
   async (todoId: string): Promise<Todo> => {
+    // check for valid todoId
     if (!Types.ObjectId.isValid(todoId)) throw new Error('Invalid Todo Id.');
 
     return todoService.delete(todoId);

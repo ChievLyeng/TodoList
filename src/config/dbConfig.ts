@@ -1,10 +1,8 @@
 import mongoose from 'mongoose';
-import dotEnv from 'dotenv';
-dotEnv.config({ path: './src/test/.test.env' });
+import ENV from '../constant/envCredential';
 
 export const connectDB = async (): Promise<void> => {
-  const DB_URI = process.env.MONGO_URI_MASTER;
-  console.log('dburi', DB_URI);
+  const DB_URI =`mongodb://${ENV.DB_USERNAME}:${ENV.DB_PASSWORD}@${ENV.DB_CONNECTION_URI}`
 
   try {
     await mongoose
