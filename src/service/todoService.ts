@@ -1,10 +1,11 @@
 import { getModelForClass } from '@typegoose/typegoose';
-import { Todo } from '../entity/todoModel';
+import { Todo } from '../entities/todoModel';
 import {
   TodoInput,
   TodoResponse,
   TodoUpdateInput,
 } from '../graphql/typeDefs/todoTypeDef';
+import moment from 'moment';
 
 export class TodoService {
   private todoModel = getModelForClass(Todo);
@@ -49,10 +50,10 @@ export class TodoService {
         description,
         completed,
         dueDate,
+        updatedAt: moment.now(),
       },
       { new: true }
     );
-
     return updatedTodo;
   }
 }

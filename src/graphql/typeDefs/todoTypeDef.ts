@@ -1,5 +1,10 @@
-import { ID, Field, Int, ObjectType as GqlType, InputType, ObjectType } from 'type-graphql';
-import { Todo } from '../../entity/todoModel';
+import {
+  Float,
+  ID,
+  Field,
+  ObjectType as GqlType,
+  InputType,
+} from 'type-graphql';
 
 @InputType()
 export class TodoUpdateInput {
@@ -12,7 +17,7 @@ export class TodoUpdateInput {
   @Field(() => Boolean, { nullable: true, defaultValue: false })
   completed?: boolean;
 
-  @Field(() => Int, { nullable: true })
+  @Field(() => Float, { nullable: true })
   dueDate?: number;
 }
 
@@ -27,7 +32,7 @@ export class TodoInput {
   @Field(() => Boolean, { defaultValue: false, nullable: false })
   completed: boolean;
 
-  @Field(() => Int)
+  @Field(() => Float)
   dueDate: number;
 }
 
@@ -45,8 +50,14 @@ export class TodoResponse {
   @Field(() => Boolean)
   completed: boolean;
 
-  @Field(() => Int)
+  @Field(() => Float)
   dueDate: number;
+
+  @Field(() => Float) 
+  updatedAt: number;
+
+  @Field(() => Float)
+  createdAt: number;
 }
 @GqlType()
 export class TodoTypeDef {
@@ -59,6 +70,12 @@ export class TodoTypeDef {
   @Field()
   completed: boolean;
 
-  @Field(() => Int)
+  @Field(() => Float)
   dueDate: number;
+
+  @Field(() => Float) 
+  updatedAt: number;
+
+  @Field(() => Float) 
+  createdAt: number;
 }

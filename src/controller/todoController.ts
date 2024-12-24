@@ -1,4 +1,4 @@
-import { Todo } from '../entity/todoModel';
+import { Todo } from '../entities/todoModel';
 import asyncErrorHandler from '../errorHandlers/asyncErrorHandler';
 import {
   TodoInput,
@@ -15,7 +15,6 @@ export const createTodo = asyncErrorHandler(
     const { title, description, completed, dueDate } = input;
 
     if (!title) throw new Error('Title is required.');
-    if (!dueDate) throw new Error('Due Date is required.');
 
     const validatedData = {
       title,
@@ -50,7 +49,11 @@ export const getTodoByTitle = asyncErrorHandler(
 export const updateTodo = asyncErrorHandler(
   async (todoId: string, data: TodoUpdateInput): Promise<Todo> => {
     if (!Types.ObjectId.isValid(todoId)) throw new Error('Invalid Todo Id.');
-    return await todoService.update(todoId, data);
+
+    const updatedTodo = await todoService.update(todoId, data);
+    console.log('updatedTodo', updatedTodo);
+    if (!updatedTodo) throw new Error('Todo not found.');
+    return updatedTodo;
   }
 );
 

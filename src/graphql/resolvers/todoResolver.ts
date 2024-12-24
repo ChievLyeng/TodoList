@@ -1,5 +1,4 @@
 import { Resolver, Query, Arg, Mutation } from 'type-graphql';
-import { ApolloServerErrorCode } from '@apollo/server/errors';
 
 import { TodoInput, TodoUpdateInput } from '../typeDefs/todoTypeDef';
 import {
@@ -11,9 +10,8 @@ import {
   getTodoByTitle,
 } from '../../controller/todoController';
 import { TodoResponse } from '../typeDefs/todoTypeDef';
-import { Todo } from '../../entity/todoModel';
-import { GraphQLError } from 'graphql';
-import { Types } from 'mongoose';
+import { Todo } from '../../entities/todoModel';
+
 @Resolver()
 export class TodoResolver {
   @Mutation(() => TodoResponse, { nullable: true }) // type of return value when created data

@@ -1,10 +1,14 @@
 import { prop as DbField, Severity, modelOptions } from '@typegoose/typegoose';
 import { ObjectId } from 'mongoose';
-import { Field as GqlField, ID, Int } from 'type-graphql';
+import { Float, Field as GqlField, ID } from 'type-graphql';
+import moment from 'moment';
 
 @modelOptions({
   options: { allowMixed: Severity.ALLOW },
-  schemaOptions: { toJSON: { virtuals: true }, toObject: { virtuals: true } },
+  schemaOptions: {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  },
 })
 export class Todo {
   @GqlField(() => ID, { name: 'id' })
@@ -23,6 +27,13 @@ export class Todo {
   completed!: boolean;
 
   @DbField({ required: true })
-  @GqlField(() => Int)
+  @GqlField(() => Float)
   dueDate!: number;
+
+  @DbField({ type: Number, default: 0 })
+  updatedAt: number;
+
+  @GqlField(() => Float)
+  @DbField({ type: Number, default: moment.now() })
+  createdAt: number;
 }

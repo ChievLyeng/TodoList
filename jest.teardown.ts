@@ -1,7 +1,7 @@
 import { getModelForClass } from '@typegoose/typegoose';
 import mongoose from 'mongoose';
 import { connectDB } from './src/config/dbConfig';
-import { Todo } from './src/entity/todoModel';
+import { Todo } from './src/entities/todoModel';
 
 const TodoModel = getModelForClass(Todo);
 
