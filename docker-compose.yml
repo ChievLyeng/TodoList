@@ -6,11 +6,26 @@ services:
       - 4000:3000
     env_file:
       - .env
+    volumes:
+      - ./:/app
+      - /app/node_modules
     environment:
       PORT: 3000
-      MONGODB_URI: ${MONGO_URI_MASTER}
     networks:
       - sabay_docker
+
+  mongo:
+    image: mongo:8.0
+    volumes:
+      - ./mongo_db:/data/todo_db
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    networks:
+      - sabay_docker
+
 volumes:
   mongo_db:
 

@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import ENV from '../constant/envCredential';
 
 export const connectDB = async (): Promise<void> => {
-  const DB_URI =`mongodb://${ENV.DB_USERNAME}:${ENV.DB_PASSWORD}@${ENV.DB_CONNECTION_URI}`
+  const DB_URI =  `mongodb://${ENV.DB_USERNAME}:${ENV.DB_PASSWORD}@${ENV.DB_CONNECTION_URI}`
 
   try {
     await mongoose
