@@ -3,7 +3,7 @@ API For Todo List Crud Operation.
 
 ## Setup
 1. Clone Project <br />
-`https://github.com/ChievLyeng/TodoList_API.git`
+git clone `https://github.com/ChievLyeng/TodoList_API.git`
 
 2. Build Docker Image
 
